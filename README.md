@@ -4,7 +4,7 @@ As I understand it, you've made a `UserControl` for the pagination and when you 
 
 I was able to reproduce the behavior you're describing and then was able to suppress it by implementing [IMessageFilter](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.imessagefilter) for the user control in order to intercept the mouse events and mark them as "handled" in the filter (if they occur inside the client rectangle of the UC). 
 
-[![screenshot][2]][2]
+[![nav][2]][2]
 
     public partial class Pagination : UserControl, IMessageFilter
     {
@@ -82,4 +82,4 @@ Feel free to browse or [clone](https://github.com/IVSoftware/combobox-pagination
 
 
   [1]: https://i.stack.imgur.com/QlZbI.png
-  [2]: https://i.stack.imgur.com/E2BN2.png
+  [2]: https://i.stack.imgur.com/zLY1Y.png
