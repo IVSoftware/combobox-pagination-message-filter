@@ -21,7 +21,6 @@ namespace combo_box_pagination
 
         const int WM_LBUTTONDOWN = 0x0201;
         const int WM_LBUTTONUP = 0x0202;
-
         public bool PreFilterMessage(ref Message m)
         {
             var client = PointToClient(MousePosition);
@@ -30,7 +29,7 @@ namespace combo_box_pagination
                 case WM_LBUTTONDOWN:
                     if (ClientRectangle.Contains(client))
                     {
-                        IterateControlTree((control) => onAnyControlClick(control, client));
+                        IterateControlTree((control) => hitTest(control, client));
                         return true;
                     }
                     break;
@@ -44,33 +43,36 @@ namespace combo_box_pagination
             return false;
         }
 
-        private void onAnyControlClick(Control control, Point client)
+        private bool hitTest(Control control, Point client)
         {
             if (control.Bounds.Contains(client))
             {
                 switch (control.Name)
                 {
-                    case nameof(FirstPaginationButton): Page = 1; break;
-                    case nameof(PrevPaginationButton): Page --; break;
-                    case nameof(NextPaginationButton): Page ++; break;
-                    case nameof(LastPaginationButton): Page = Pages; break;
+                    case nameof(FirstPaginationButton): Page = 1; return true;
+                    case nameof(PrevPaginationButton): Page --; return true;
+                    case nameof(NextPaginationButton): Page ++; return true;
+                    case nameof(LastPaginationButton): Page = Pages; return true;
                     default: break;
                 }
             }
+            return false;
         }
 
-        void IterateControlTree(Action<Control> action, Control control = null)
+        bool IterateControlTree(Func<Control, bool> action, Control control = null)
         {
-            if (control == null)
-            {
-                control = this;
-            }
-            action(control);
+            if (control == null) control = this;
+            if(action(control)) return true;
             foreach (Control child in control.Controls)
             {
-                IterateControlTree(action, child);
+                if(IterateControlTree(action, child))
+                {
+                    return true;
+                }
             }
+            return false;
         }
+
         int _page = 1; // Minimum
         public int Page
         {
