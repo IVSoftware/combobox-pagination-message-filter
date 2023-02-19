@@ -19,19 +19,22 @@ namespace combo_box_pagination
             PagesLabel.Text = $"Page {Page} of {Pages}";
         }
 
+        const int WM_LBUTTONDOWN = 0x0201;
+        const int WM_LBUTTONUP = 0x0202;
+
         public bool PreFilterMessage(ref Message m)
         {
             var client = PointToClient(MousePosition);
             switch (m.Msg)
             {
-                case 0x201:
+                case WM_LBUTTONDOWN:
                     if (ClientRectangle.Contains(client))
                     {
                         IterateControlTree((control) => onAnyControlClick(control, client));
                         return true;
                     }
                     break;
-                case 0x202:
+                case WM_LBUTTONUP:
                     if(ClientRectangle.Contains(client))
                     {
                         return true;

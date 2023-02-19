@@ -54,6 +54,7 @@ namespace ivs_combobox_pagination
             this.ClientSize = new System.Drawing.Size(478, 244);
             this.Controls.Add(this.comboBoxWithPagination);
             this.Name = "MainForm";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "MainForm";
             this.ResumeLayout(false);
             this.PerformLayout();
