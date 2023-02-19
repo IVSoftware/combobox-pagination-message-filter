@@ -1,4 +1,10 @@
-As I understand it, you've made a `UserControl` for the pagination and when you click on one of the nav buttons it results in an unwanted close of the drop down.  I was able to reproduce the behavior you're describing and then was able to suppress it by implementing [IMessageFilter](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.imessagefilter) for the user control in order to intercept the mouse events and mark them as "handled" in the filter (if they occur inside the client rectangle of the UC). 
+As I understand it, you've made a `UserControl` for the pagination and when you click on one of the nav buttons it results in an unwanted close of the drop down. 
+
+[![user-control][1]][1]
+
+I was able to reproduce the behavior you're describing and then was able to suppress it by implementing [IMessageFilter](https://learn.microsoft.com/en-us/dotnet/api/system.windows.forms.imessagefilter) for the user control in order to intercept the mouse events and mark them as "handled" in the filter (if they occur inside the client rectangle of the UC). 
+
+[![screenshot][2]][2]
 
     public partial class Pagination : UserControl, IMessageFilter
     {
@@ -72,5 +78,8 @@ For example, detecting a click in the client rectangle of one of the buttons cou
         return false;
     }
 
-I wrote enough code to prove the concept out before answering. Feel free to browse or [clone]() if that would be helpful.
+Feel free to browse or [clone](https://github.com/IVSoftware/combobox-pagination-message-filter.git) the code I wrote to test this answer if that would be helpful.
 
+
+  [1]: https://i.stack.imgur.com/QlZbI.png
+  [2]: https://i.stack.imgur.com/E2BN2.png
